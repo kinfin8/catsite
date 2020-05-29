@@ -3,8 +3,8 @@ from django.db import models
 MALE = 'M'
 FEMALE = 'F'
 GENDER_CHOICES = [
-    ('M', 'Male'),
-    ('F', 'Female'),
+    (MALE, 'Male'),
+    (FEMALE, 'Female'),
 ]
 
 
