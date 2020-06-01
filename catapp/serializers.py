@@ -14,6 +14,7 @@ class CatOwnerSerializer(serializers.ModelSerializer):
             'name',
         ]
 
+
 class CatHomeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Home
@@ -22,18 +23,21 @@ class CatHomeSerializer(serializers.ModelSerializer):
             'name',
         ]
 
+
 class BreedSerializer(serializers.ModelSerializer):
     cats_owners = serializers.SerializerMethodField()
     cats_homes = serializers.SerializerMethodField()
 
     def get_cats_owners(self, obj):
-        cat_owner = Human.objects.filter(cats__in=obj.cats.all()).values('id', 'name')
+        # cat_owner = Human.objects.filter(cats__in=obj.cats.all()).values('id', 'name')
+        cat_owner = Human.objects.filter(cats__breed_id=obj.id)
         serializer = CatOwnerSerializer(cat_owner, many=True)
         return serializer.data
     
     def get_cats_homes(self, obj):
-        cat_owner = Human.objects.filter(cats__in=obj.cats.all()).values('home')
-        cat_home = Home.objects.filter(id__in=cat_owner.all())
+        # cat_owner = Human.objects.filter(cats__in=obj.cats.all()).values('home')
+        # cat_home = Home.objects.filter(id__in=cat_owner.all())
+        cat_home = Home.objects.filter(human__cats__breed_id=obj.id)
         serializer = CatHomeSerializer(cat_home, many=True)
         return serializer.data
 
